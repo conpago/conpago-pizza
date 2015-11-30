@@ -1,2 +1,2 @@
-# pizza
+# conpago-pizza
 Conpago Framework demo app
