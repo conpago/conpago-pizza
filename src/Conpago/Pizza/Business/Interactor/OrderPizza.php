@@ -50,7 +50,7 @@
 
 			$ingredients = $this->orderPizzaDao->getIngredients($recipe);
 
-			$pizza = $this->makePizza($ingredients, $order->getDoubleDough());
+			$pizza = $this->makePizza($ingredients, $order->getDoubkleDough());
 			$baked_pizza = $this->owen->bake($pizza);
 			$baked_pizza->addSauces($order->getSauces());
 

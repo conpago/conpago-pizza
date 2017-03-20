@@ -2,10 +2,12 @@
 
 	namespace Conpago\Pizza\Modules;
 
-	use Conpago\DI\IContainer;
+	use Conpago\Core\ControllerResolver;
+    use Conpago\DI\IContainer;
 	use Conpago\DI\IContainerBuilder;
 	use Conpago\DI\IModule;
-	use Conpago\Presentation\Contract\IControllerResolver;
+    use Conpago\Presentation\Contract\IController;
+    use Conpago\Presentation\Contract\IControllerResolver;
 
 	class ControllerModule implements IModule
 	{
@@ -13,17 +15,17 @@
 		{
 
 			$builder
-				->registerType('Conpago\Core\ControllerResolver')
-				->asA('Conpago\IControllerResolver');
+				->registerType(ControllerResolver::class)
+				->asA(IControllerResolver::class);
 
 			$builder
 				->register(function (IContainer $c)
 				{
 					/** @var IControllerResolver $controllerResolver */
-					$controllerResolver = $c->resolve('Conpago\IControllerResolver');
+					$controllerResolver = $c->resolve(IControllerResolver::class);
 
 					return $controllerResolver->getController();
 				})
-				->asA('Conpago\Presentation\Contract\IController');
+				->asA(IController::class);
 		}
 	}

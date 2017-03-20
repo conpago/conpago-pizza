@@ -9,32 +9,40 @@
 	namespace Conpago\Pizza\Business\Modules;
 
 	use Conpago\DI\IContainerBuilder;
-	use Conpago\DI\Parameter;
 	use Conpago\DI\IModule;
+    use Conpago\Pizza\Business\Contract\Interactor\IHelloWorld;
+    use Conpago\Pizza\Business\Contract\Presenter\IHelloWorldPresenter;
+    use Conpago\Pizza\Business\Interactor\HelloWorld;
+    use Conpago\Pizza\Presentation\Contract\Controller\IHelloWorldController;
+    use Conpago\Pizza\Presentation\Controller\HelloWorldController;
+    use Conpago\Pizza\Presentation\Presenter\HelloWorldPresenter;
+    use Conpago\Presentation\Contract\IController;
 
-	class HelloWorldModule implements IModule
+    class HelloWorldModule implements IModule
 	{
+        const HELLO_WORLD_CONTROLLER_KEY = 'HelloWorldController';
+        const HELLO_WORLD_KEY = 'HelloWorld';
 
-		/**
+        /**
 		 * @param IContainerBuilder $builder
 		 *
 		 * @SuppressWarnings(PHPMD.StaticAccess)
 		 */
 		public function build(IContainerBuilder $builder)
 		{
-			$builder->registerType('Conpago\Pizza\Presentation\Controller\HelloWorldController')
-				->asA('Conpago\IController')
-				->asA('Conpago\Pizza\Presentation\Contract\Controller\IHelloWorldController')
-				->keyed('HelloWorldController')
+			$builder->registerType(HelloWorldController::class)
+				->asA(IController::class)
+				->asA(IHelloWorldController::class)
+				->keyed(self::HELLO_WORLD_CONTROLLER_KEY)
 				->singleInstance();
 
-			$builder->registerType('Conpago\Pizza\Business\Interactor\HelloWorld')
-				->asA('Conpago\Pizza\Business\Contract\Interactor\IHelloWorld')
-				->named('HelloWorld')
+			$builder->registerType(HelloWorld::class)
+				->asA(IHelloWorld::class)
+				->named(self::HELLO_WORLD_KEY)
 				->singleInstance();
 
-			$builder->registerType('Conpago\Pizza\Presentation\Presenter\HelloWorldPresenter')
-				->asA('Conpago\Pizza\Business\Contract\Presenter\IHelloWorldPresenter')
+			$builder->registerType(HelloWorldPresenter::class)
+				->asA(IHelloWorldPresenter::class)
 				->singleInstance();
 		}
 	}

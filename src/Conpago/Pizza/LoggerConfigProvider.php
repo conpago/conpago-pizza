@@ -35,7 +35,7 @@
 			foreach ($this->config->getValue('app.log') as $appLogConfig) {
 				$result[] = new LoggerConfig(
 						$appLogConfig['log_level'],
-						implode(DIRECTORY_SEPARATOR, array($this->appPath->root(), $appLogConfig['log_file']))
+						implode(DIRECTORY_SEPARATOR, array($this->appPath->root()->get(), $appLogConfig['log_file']))
 				);
 			}
 			return $result;

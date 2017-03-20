@@ -13,14 +13,7 @@
 	/** @var AppBuilder $appBuilder */
 	$appBuilder = $appBuilderFactory->createAppBuilder("Web", "..");
 
-	if ($c['devel']['debug'] == true)
-	{
-		$appBuilder->buildApp();
-	}
-	else
-	{
-		$appBuilder->readPersistedApp();
-	}
+	$appBuilder->buildApp();
 
 	/**
 	 * @param AppBuilder $appBuilder

@@ -2,61 +2,75 @@
 
 namespace Conpago\Pizza\Modules;
 
-use Conpago\Config\PhpConfig;
+use Conpago\Config\ArrayConfig;
+use Conpago\Config\Contract\IAppConfig;
+use Conpago\Config\Contract\IConfig;
+use Conpago\Config\PhpConfigBuilder;
+use Conpago\Contract\IApp;
+use Conpago\Core\WebApp;
 use Conpago\DI\IContainer;
 use Conpago\DI\IContainerBuilder;
 use Conpago\DI\IModule;
+use Conpago\File\Contract\IFileSystem;
+use Conpago\Helpers\AppMask;
 use Conpago\Helpers\Contract\IAppMask;
+use Conpago\Helpers\Contract\IResponse;
+use Conpago\Helpers\Response;
+use Conpago\Logging\Contract\ILoggerConfig;
+use Conpago\Logging\Contract\ILoggerConfigProvider;
+use Conpago\Pizza\AppConfig;
+use Conpago\Pizza\LoggerConfig;
+use Conpago\Pizza\LoggerConfigProvider;
+use Conpago\Time\Contract\ITimeService;
+use Conpago\TimeService;
+use Conpago\Utils\ServerAccessor;
+use Conpago\Utils\SessionAccessor;
 
 class ConfigurationModule implements IModule {
 	public function build(IContainerBuilder $builder) {
 
-		$builder->registerType('Conpago\Utils\SessionAccessor');
-		$builder->registerType('Conpago\Utils\ServerAccessor');
+		$builder->registerType(SessionAccessor::class);
+		$builder->registerType(ServerAccessor::class);
 
 		$builder
-			->registerType('Conpago\Helpers\AppMask')
-			->asA('Conpago\Helpers\Contract\IAppMask');
+			->registerType(AppMask::class)
+			->asA(IAppMask::class);
 
 		$builder
-			->registerType('Conpago\Core\WebApp')
-			->asA('Conpago\Contract\IApp');
+			->registerType(WebApp::class)
+			->asA(IApp::class);
 
 		$builder
 			->register(function(IContainer $c)
 			{
 				/** @var IAppMask $appMask */
-				$appMask = $c->resolve('Conpago\Helpers\Contract\IAppMask');
-				return new PhpConfig(
-					$c->resolve('Conpago\File\Contract\IFileSystem'),
-					$appMask->configMask()
-				);
+				$appMask = $c->resolve(IAppMask::class);
+				return new ArrayConfig((new PhpConfigBuilder(
+					$c->resolve(IFileSystem::class),
+					$appMask->configMask()))->build()
+                );
 			})
-			->asA('Conpago\Config\Contract\IConfig')
+			->asA(IConfig::class)
 			->singleInstance();
 
 		$builder
-			->registerType('Conpago\Pizza\AppConfig')
-			->asA('Conpago\Config\Contract\IAppConfig');
+			->registerType(AppConfig::class)
+			->asA(IAppConfig::class);
 
 		$builder
-			->registerType('Conpago\TimeService')
-			->asA('Conpago\Contract\ITimeService');
+			->registerType(TimeService::class)
+			->asA(ITimeService::class);
 
 		$builder
-			->registerType('Conpago\Helpers\Response')
-			->asA('Conpago\Helpers\Contract\IResponse');
+			->registerType(Response::class)
+			->asA(IResponse::class);
 
 		$builder
-			->registerType('Conpago\Pizza\LoggerConfigProvider')
-			->asA('Conpago\Logging\Contract\ILoggerConfigProvider');
+			->registerType(LoggerConfigProvider::class)
+			->asA(ILoggerConfigProvider::class);
 
 		$builder
-			->registerType('Conpago\Pizza\LoggerConfig')
-			->asA('Conpago\ILoggerConfig');
-
-		$builder
-			->registerType('Conpago\Logs\MonologLogger')
-			->asA('Conpago\ILogger');
+			->registerType(LoggerConfig::class)
+			->asA(ILoggerConfig::class);
 	}
 }

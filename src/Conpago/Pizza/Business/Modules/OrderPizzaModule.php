@@ -10,34 +10,45 @@
 
 	use Conpago\DI\IContainerBuilder;
 	use Conpago\DI\IModule;
+    use Conpago\Pizza\Business\Contract\Dao\IOrderPizzaDao;
+    use Conpago\Pizza\Business\Contract\Interactor\IOrderPizza;
+    use Conpago\Pizza\Business\Contract\Presenter\IOrderPizzaPresenter;
+    use Conpago\Pizza\Business\Interactor\OrderPizza;
+    use Conpago\Pizza\Dao\OrderPizzaDao;
+    use Conpago\Pizza\Presentation\Contract\Controller\IOrderPizzaController;
+    use Conpago\Pizza\Presentation\Controller\OrderPizzaController;
+    use Conpago\Pizza\Presentation\Presenter\OrderPizzaPresenter;
+    use Conpago\Presentation\Contract\IController;
 
-	class OrderPizzaModule implements IModule
+    class OrderPizzaModule implements IModule
 	{
+        const ORDER_PIZZA_CONTROLLER_KEY = 'OrderPizzaController';
+        const ORDER_PIZZA_KEY = 'OrderPizza';
 
-		/**
+        /**
 		 * @param IContainerBuilder $builder
 		 *
 		 * @SuppressWarnings(PHPMD.StaticAccess)
 		 */
 		public function build(IContainerBuilder $builder)
 		{
-			$builder->registerType('Conpago\Pizza\Presentation\Controller\OrderPizzaController')
-				->asA('Conpago\IController')
-				->asA('Conpago\Pizza\Presentation\Contract\Controller\IOrderPizzaController')
-				->keyed('OrderPizzaController')
+			$builder->registerType(OrderPizzaController::class)
+				->asA(IController::class)
+				->asA(IOrderPizzaController::class)
+				->keyed(self::ORDER_PIZZA_CONTROLLER_KEY)
 				->singleInstance();
 
-			$builder->registerType('Conpago\Pizza\Business\Interactor\OrderPizza')
-				->asA('Conpago\Pizza\Business\Contract\Interactor\IOrderPizza')
-				->named('OrderPizza')
+			$builder->registerType(OrderPizza::class)
+				->asA(IOrderPizza::class)
+				->named(self::ORDER_PIZZA_KEY)
 				->singleInstance();
 
-			$builder->registerType('Conpago\Pizza\Presentation\Presenter\OrderPizzaPresenter')
-				->asA('Conpago\Pizza\Business\Contract\Presenter\IOrderPizzaPresenter')
+			$builder->registerType(OrderPizzaPresenter::class)
+				->asA(IOrderPizzaPresenter::class)
 				->singleInstance();
 
-			$builder->registerType('Conpago\Pizza\Dao\OrderPizzaDao')
-				->asA('Conpago\Pizza\Business\Contract\Dao\IOrderPizzaDao')
+			$builder->registerType(OrderPizzaDao::class)
+				->asA(IOrderPizzaDao::class)
 				->singleInstance();
 		}
 	}

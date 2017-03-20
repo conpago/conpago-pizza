@@ -21,7 +21,6 @@
     "phpmd/phpmd": "*",
     "squizlabs/php_codesniffer": "*",
     "sebastian/phpcpd": "*",
-    "sebastian/phpdcd": "*",
     "phpunit/phpunit": "*"
   },
   "autoload": {
