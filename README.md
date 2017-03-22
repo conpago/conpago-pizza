@@ -19,7 +19,7 @@ Host: localhost:8888
 Date: Wed, 22 Mar 2017 09:48:21 +0100
 Connection: close
 X-Powered-By: PHP/7.1.3-2+deb.sury.org~xenial+1
-Content-type: text/html; charset=UTF-8
+Content-type: application/json; charset=UTF-8
 
 {"success":true,"text":"Hello World!!!"}
 ```
@@ -40,7 +40,7 @@ Host: localhost:8888
 Date: Wed, 22 Mar 2017 09:48:14 +0100
 Connection: close
 X-Powered-By: PHP/7.1.3-2+deb.sury.org~xenial+1
-Content-type: text/html; charset=UTF-8
+Content-type: application/json; charset=UTF-8
 
 {"ingredients":{"0":"sos pomidorowy","1":"ser","2":"pieczarki"},"double_dough":"1","sauces":{"0":"ketchup","1":"mayonaise"}}
 ```
